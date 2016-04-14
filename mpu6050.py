@@ -4,7 +4,7 @@ import ctypes
 from smbus import SMBus
 
 class MPU6050(object):
-    def __init__(self, bus_id=1, base=0x68):
+    def __init__(self, bus_id=1, base=0x68, normalize=False):
         self.bus = SMBus(bus_id)
         self.base = base
 
@@ -14,10 +14,14 @@ class MPU6050(object):
         # Gyroscope configuration
         assert(self.bus.read_byte_data(self.base, 0x1b) == 0)
         self.gyro_scale = 131.0
+        if normalize:
+            self.gyro_scale *= 250
 
         # Accelerometer configuration
         assert(self.bus.read_byte_data(self.base, 0x1c) == 0)
         self.accel_scale = 16384.0
+        if normalize:
+            self.accel_scale *= 2
 
     def _read_word(self, addr):
         high = self.bus.read_byte_data(self.base, addr)

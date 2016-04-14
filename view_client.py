@@ -11,7 +11,7 @@ ds = []     # data series
 
 def receiver():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(('192.168.100.102', 9000))
+    sock.connect(('192.168.1.26', 9000))
     while True:
         msg = sock.recv(7*4)
         t, = struct.unpack('f', msg[:4])
@@ -23,7 +23,6 @@ def receiver():
 
 def plotter():
     labels = ['acc_x', 'acc_y', 'acc_z', 'gyro_x', 'gyro_y', 'gyro_z']
-    scale = [2, 2, 2, 250, 250, 250]
     W = 5
 
     plt.ion()
@@ -46,7 +45,7 @@ def plotter():
             D = np.array(ds)
 
         for i in range(6):
-            axes[i].set_data(T, D[:, i]/scale[i])
+            axes[i].set_data(T, D[:, i])
         plt.xlim(t-W, t)
         plt.ylim(-1.5, 1.5)
         plt.draw()

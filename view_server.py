@@ -3,7 +3,7 @@ import time
 import struct
 import socket
 
-sensor = MPU6050()
+sensor = MPU6050(normalize=True)
 
 server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_sock.bind(('0.0.0.0', 9000))
